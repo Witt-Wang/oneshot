@@ -5,6 +5,11 @@ This is a PyTorch implementation for [One-Shot Learning for Long-Tail Visual Rel
 ## News
 Because of the new coronavirus, we can't go back to school, so our open source work was delayed. We will upload code as soon as possible. If you have any questions, please contact the first author.
 
+## More
+
+- [ ] code optimization
+- [ ] end to end
+
 ## Benchmarking on VG-one and VRD-one
 VRD-one
 |                    | PredCls 5-way 1-shot | PredCls 10-way 1-shot |SGCls 5-way 1-shot | SGCls 10-way 1-shot | 
