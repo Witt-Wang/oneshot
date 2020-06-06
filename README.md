@@ -8,9 +8,11 @@ Because of the new coronavirus, we can't go back to school, so our open source w
 ## Benchmarking on Visual Genome
 
 |                    |         |VRD-One | |                    | |                    | VG-One |     |               |
+|--------------------|:--------:|:--------:|:--------:|:--------:|:-----:|:--------:|:-----:|:-----:|
 |                    | PredCls |  | SGCls | | PredCls| | SGCls||
+|--------------------|:--------:|:--------:|:--------:|:--------:|:-----:|:--------:|:-----:|:-----:|
 |                    | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot| 10-way 1-shot|
-|                    | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot| 10-way 1-shot|
+
 |--------------------|:--------:|:--------:|:--------:|:--------:|:-----:|:--------:|:-----:|:-----:|
 | Ours(old    | 48.4%        | 33.5%        | 22.3%       | 20.9%        | 56.3%    | 37.5%       | 14.9%     | 13.2%|
 | Ours        | 49.9%        | 35.9%        | 25.2%        | 19.5%       | 56.3%    | 40.7%       | 15.2%     | 14.3%|
