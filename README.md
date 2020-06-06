@@ -5,12 +5,19 @@ This is a PyTorch implementation for [One-Shot Learning for Long-Tail Visual Rel
 ## News
 Because of the new coronavirus, we can't go back to school, so our open source work was delayed. We will upload code as soon as possible. If you have any questions, please contact the first author.
 
-## Benchmarking on Visual Genome
+## Benchmarking on VG-one and VRD-one
+VRD-one
+|                    | PredCls 5-way 1-shot | PredCls 10-way 1-shot |SGCls 5-way 1-shot | SGCls 10-way 1-shot | 
+|--------------------|:--------:|:--------:|:--------:|:--------:|
+| Ours(old    | 48.4%        | 33.5%        | 22.3%       | 20.9%        | 
+| Ours        | 49.9%        | 35.9%        | 25.2%        | 19.5%       | 
+VG-one
+|                    | PredCls 5-way 1-shot | PredCls 10-way 1-shot | SGCls 5-way 1-shot| SGCls 10-way 1-shot|
+|--------------------|:--------:|:--------:|:--------:|:--------:|
+| Ours(old    | 56.3%    | 37.5%       | 14.9%     | 13.2%|
+| Ours        | 56.3%    | 40.7%       | 15.2%     | 14.3%|
 
-|                    | PredCls 5-way 1-shot | PredCls 10-way 1-shot |SGCls 5-way 1-shot | SGCls 10-way 1-shot | PredCls 5-way 1-shot | PredCls 10-way 1-shot | SGCls 5-way 1-shot| SGCls 10-way 1-shot|
-|--------------------|:--------:|:--------:|:--------:|:--------:|:-----:|:--------:|:-----:|:-----:|
-| Ours(old    | 48.4%        | 33.5%        | 22.3%       | 20.9%        | 56.3%    | 37.5%       | 14.9%     | 13.2%|
-| Ours        | 49.9%        | 35.9%        | 25.2%        | 19.5%       | 56.3%    | 40.7%       | 15.2%     | 14.3%|
+
 ## Requirements
 * Python 3
 * Python packages
