@@ -1,12 +1,19 @@
 # One-Shot Learning for Long-Tail Visual Relation Detection
 
-This is a PyTorch implementation for [One-Shot Learning for Long-Tail Visual Relation Detection, AAAI2020] This is an improved version of the code.
+This is a PyTorch implementation for [One-Shot Learning for Long-Tail Visual Relation Detection, AAAI2020] This is an **improved version** of the code.
 
 ## News
 Because of the new coronavirus, we can't go back to school, so our open source work was delayed. We will upload code as soon as possible. If you have any questions, please contact the first author.
 
 ## Benchmarking on Visual Genome
 
+|                    |         |VRD-One | |                    | |                    | VG-One |     |               |
+|                    | PredCls |  | SGCls | | PredCls| | SGCls||
+|                    | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot| 10-way 1-shot|
+|                    | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot | 10-way 1-shot | 5-way 1-shot| 10-way 1-shot|
+|--------------------|:--------:|:--------:|:--------:|:--------:|:-----:|:--------:|:-----:|:-----:|
+| Ours(old    | 48.4%        | 33.5%        | 22.3%       | 20.9%        | 56.3%    | 37.5%       | 14.9%     | 13.2%|
+| Ours        | 49.9%        | 35.9%        | 25.2%        | 19.5%       | 56.3%    | 40.7%       | 15.2%     | 14.3%|
 ## Requirements
 * Python 3
 * Python packages
@@ -36,6 +43,9 @@ Download it [here]. Unzip it under the data folder. You should see a `vg-one` fo
 
 
 ## Evaluating Pre-trained models
+```
+python main.py
 
+```
 ## Citing
 If you use this code in your research, please use the following BibTeX entry.
