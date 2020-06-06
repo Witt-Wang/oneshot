@@ -55,7 +55,6 @@ Download it [here]. Unzip it under the data folder. You should see a `vg-one` fo
 ## Evaluating Pre-trained models
 ```
 python main.py
-
 ```
 ## Citing
 If you use this code in your research, please use the following BibTeX entry.
