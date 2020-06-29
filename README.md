@@ -46,7 +46,7 @@ VG-one
 Download it [here](https://1drv.ms/u/s!AusVrwCGXciOlBI6p1vtLbVVAMD-?e=6MZplh). Unzip it under the data folder. You should see a `vg-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
 
 ### VRD-one
-Download it [here](https://1drv.ms/u/s!AusVrwCGXciOlBGt-JRl7Ihk5Ame?e=btwGDf). Unzip it under the data folder. You should see a `vg-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
+Download it [here](https://1drv.ms/u/s!AusVrwCGXciOlBGt-JRl7Ihk5Ame?e=btwGDf). Unzip it under the data folder. You should see a `vrd-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
 
 
 ## Directory Structure
