@@ -1,6 +1,6 @@
 # One-Shot Learning for Long-Tail Visual Relation Detection
 
-This is a PyTorch implementation for [One-Shot Learning for Long-Tail Visual Relation Detection, AAAI2020] This is an **improved version** of the code.
+This is a PyTorch implementation for [One-Shot Learning for Long-Tail Visual Relation Detection] This is an **improved version** of the code.
 
 ## News
 Because of the new coronavirus, we can't go back to school, so our open source work was delayed. We will upload code as soon as possible. If you have any questions, please contact the first author.
@@ -43,16 +43,18 @@ VG-one
 
 
 ### VG-one
-Download it [here]. Unzip it under the data folder. You should see a `vg-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
+Download it [here](https://1drv.ms/u/s!AusVrwCGXciOlBI6p1vtLbVVAMD-?e=6MZplh). Unzip it under the data folder. You should see a `vg-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
 
 ### VRD-one
-Download it [here]. Unzip it under the data folder. You should see a `vg-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
+Download it [here](https://1drv.ms/u/s!AusVrwCGXciOlBGt-JRl7Ihk5Ame?e=btwGDf). Unzip it under the data folder. You should see a `vg-one` folder unzipped there. It contains .json annotations that suit the dataloader used in this repo.
 
 
 ## Directory Structure
 
-
-## Evaluating Pre-trained models
+## Getting Started
+### Prepare datasets
+Our model is based on Faster RCNN, you need to use Faster RCNN model to extract image features, and put them in the `$oneshot/data`.
+### Train a model
 ```
 python main.py
 ```
