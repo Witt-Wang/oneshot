@@ -60,3 +60,6 @@ python main.py
 ```
 ## Citing
 If you use this code in your research, please use the following BibTeX entry.
+
+### Contact Us
+If you have any questions, please contact us ( wangweitao@seu.edu.cn ).
