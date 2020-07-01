@@ -3,14 +3,14 @@ from torchvision import models, transforms
 import torch
 from collections import OrderedDict
 import math
-#import seaborn as sns
+
 import numpy as np
 import matplotlib.pyplot as plt
 import torch.nn.functional as F 
 import numpy as np
 
 
-control_dim = 
+
 
 class ENCODE(nn.Module):
     
@@ -417,7 +417,7 @@ class GraphNetwork(nn.Module):
         
         for l in range(self.num_layers):
             
-            edge2node_net = NodeUpdateNetwork(in_features=self.in_features+control_dim if l == 0 else self.node_features,
+            edge2node_net = NodeUpdateNetwork(in_features=self.in_features if l == 0 else self.node_features,
                                               num_features=self.node_features,
                                               dropout=self.dropout if l < self.num_layers-1 else 0.0)
 

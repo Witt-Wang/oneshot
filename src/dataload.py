@@ -13,7 +13,6 @@ from os.path import join
 from PIL import Image
 import os
 
-VG_now = False
 
 class VRDDataLoader(data.Dataset):
     def __init__(self, test_mode='train',
@@ -32,33 +31,23 @@ class VRDDataLoader(data.Dataset):
 
         self._mode = test_mode
 
+        self._created_masks_path = '/data/created_masks/'
+        self._features_path = '/data/features/'
+        self._json_path = '/data/json_prepare/'
+        self._orig_image_path = '/data/VG/VG_100K/'
+
+        self._new_features_path = '/data//features/'
 
 
-        
-        self._created_masks_path = 
-        self._features_path = 
-        self._json_path = 
-        self._orig_image_path = 
-        
-        self._new_features_path =
-       
-        
-        
 
-        self.data = self.load_dataset(self._mode, self._json_path)     
+
+        self.data = self.load_dataset(self._mode, self._json_path)
         self.transe_embedding = self.load_transe_embedding()
 
 
-    def load_transe_embedding(self):
-       
-        
 
-        obj_vecs_transe = np.load('/home/wwt/PR/embedding/vg_vec_wiki.npy')
-        
-       
-        return obj_vecs_transe
-    
-    
+
+
     def load_dataset(self, mode, json_path='json_annos/'):
 
         if mode == 'testtest':
@@ -77,22 +66,15 @@ class VRDDataLoader(data.Dataset):
         """Return the embedding of an object tag."""
 
 
-        if VG_now:
-            zero = np.zeros(150)
-        else:
-            zero = np.zeros(100)
-        zero[int(object_tag)] = 1
-        zero_embedding = np.array(zero).flatten()
-        
-        final_embedding = zero_embedding
-        return final_embedding
-    
-    def obj2emb(self, object_tag):
-        """Return the embedding of an object tag."""
 
-        embedding = self.transe_embedding[int(object_tag)].flatten()     
-        final_embedding = embedding
-        return final_embedding
+        zero = np.zeros(150)
+
+        zero[int(object_tag)] = 1
+
+        return np.array(zero).flatten()
+
+
+
 
     def get_task_batch(self, num_tasks=5,
                        num_ways=20,
@@ -108,7 +90,7 @@ class VRDDataLoader(data.Dataset):
         if seed is not None:
             random.seed(seed)
 
-      
+
 
         support_label, query_label = [], []
         for _ in range(num_ways * num_shots):
@@ -127,7 +109,7 @@ class VRDDataLoader(data.Dataset):
         idx_for_class = []
 
         for t_idx in range(num_tasks):
-           
+
             task_class_list = random.sample(list(range(num_class)), num_ways)
             idx_for_class.append(task_class_list)
             for c_idx in range(num_ways):
@@ -137,10 +119,10 @@ class VRDDataLoader(data.Dataset):
                 idx_for_data.append(class_data_list)
 
                 for i_idx in range(num_shots):
-                   
+
                     support_label[i_idx + c_idx * num_shots][t_idx] = c_idx
 
-                
+
                 for i_idx in range(num_queries):
                     query_label[i_idx + c_idx * num_queries][t_idx] = c_idx
 
@@ -151,7 +133,6 @@ class VRDDataLoader(data.Dataset):
         return support_all_input, query_all_input,os_label, [support_label, query_label],[idx_for_class,idx_for_data]
 
     def get_features(self, idx_for_data, idx_for_class):
-      
 
         num_tasks = self.num_tasks
         num_ways = self.num_ways
@@ -171,24 +152,19 @@ class VRDDataLoader(data.Dataset):
         query_masks = []
         query_subject_embeddings = []
         query_object_embeddings = []
-        
-        query_sem_subject_embeddings = []
-        query_sem_object_embeddings = [] 
-        support_subject_sem_embeddings = [] 
-        support_object_sem_embeddings = []
-        
+
         support_object_label = []
         support_subject_label = []
-        
+
         query_object_label = []
         query_subject_label = []
-        
+
         support_object_new_feature = []
         support_subject_new_feature = []
         query_object_new_feature = []
         query_subject_new_feature = []
-        
-        support_true_name =[]
+
+        support_true_name = []
         query_true_name = []
         for t_idx in range(num_tasks):
             task_class_list = idx_for_class[t_idx]
@@ -196,54 +172,52 @@ class VRDDataLoader(data.Dataset):
             for c_idx in range(num_ways):
 
                 class_data_list = idx_for_data[num_ways * t_idx + c_idx]
+
                 for i_idx in range(num_shots):
                     name = self.data[task_class_list[c_idx]]["relationships"][class_data_list[i_idx]]["filename"]
                     subject_name = self.data[task_class_list[c_idx]]["relationships"][class_data_list[i_idx]]["subject"]
                     object_name = self.data[task_class_list[c_idx]]["relationships"][class_data_list[i_idx]]["object"]
+                    str_id = self.data[task_class_list[c_idx]]["relationships"][class_data_list[i_idx]]["id"]
+                    str_id = str(str_id)
 
-                    
-                    
                     support_name = self.data[task_class_list[c_idx]]["predicate"]
                     support_true_name.append(support_name)
-                    
+
                     subject_new_feature = np.load(
                         self._new_features_path + 'relationship'
-                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png',
+                                                                                     '') + '_' + str_id + '.npy')
                     support_subject_new_feature.append(subject_new_feature)
 
-               
                     object_new_feature = np.load(
                         self._new_features_path + 'relationship'
-                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     support_object_new_feature.append(object_new_feature)
-                    
-                    
-                    
+
                     subject_feature = np.load(
                         self._features_path + 'relationship'
-                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png',
+                                                                                     '') + '_' + str_id + '.npy')
                     support_subject_feature.append(subject_feature)
 
                     uni_feature = np.load(
                         self._new_features_path + 'relationship'
-                        + '_union_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_union_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     support_uni_feature.append(uni_feature)
 
                     object_feature = np.load(
                         self._features_path + 'relationship'
-                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     support_object_feature.append(object_feature)
-                    
-                    
 
                     masks = np.load(
                         self._created_masks_path + "relationship"
-                        + '_binary_masks/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_binary_masks/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     support_masks.append(masks)
 
                     subject_id = self.data[task_class_list[c_idx]]["relationships"][class_data_list[i_idx]]["object_id"]
                     object_id = self.data[task_class_list[c_idx]]["relationships"][class_data_list[i_idx]]["subject_id"]
-                    
+
                     support_object_label.append(np.array(subject_id))
                     support_subject_label.append(np.array(object_id))
 
@@ -253,66 +227,62 @@ class VRDDataLoader(data.Dataset):
 
                     object_embeddings = self.obj2onehot(object_id)
                     support_object_embeddings.append(object_embeddings)
-                    
-   
 
-                    subject_sem_embeddings = self.obj2emb(subject_id)
-
-                    support_subject_sem_embeddings.append(subject_sem_embeddings)
-
-                    object_sem_embeddings = self.obj2emb(object_id)
-                    support_object_sem_embeddings.append(object_sem_embeddings)
-
-                    
+                    # load sample for query set
                 for i_idx in range(num_queries):
                     name = self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]][
                         "filename"]
-
+                    str_id = self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]][
+                        "id"]
+                    str_id = str(str_id)
                     subject_name = \
-                    self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]]["subject"]
+                        self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]][
+                            "subject"]
                     object_name = \
-                    self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]]["object"]
-                    
+                        self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]]["object"]
+
                     query_name = self.data[task_class_list[c_idx]]["predicate"]
-                    query_true_name.append(query_name)
-              
-                    
+                    query_true_name.append(subject_name)
+
+
                     subject_new_feature = np.load(
                         self._new_features_path + "relationship"
-                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png',
+                                                                                     '') + '_' + str_id + '.npy')
                     query_subject_new_feature.append(subject_new_feature)
 
                     object_new_feature = np.load(
                         self._new_features_path + "relationship"
-                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     query_object_new_feature.append(object_new_feature)
 
-                    
                     subject_feature = np.load(
                         self._features_path + "relationship"
-                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_subject_boxes_pool5/' + name.replace('.jpg', '').replace('.png',
+                                                                                     '') + '_' + str_id + '.npy')
                     query_subject_feature.append(subject_feature)
 
                     uni_feature = np.load(
                         self._new_features_path + "relationship"
-                        + '_union_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_union_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     query_uni_feature.append(uni_feature)
 
                     object_feature = np.load(
                         self._features_path + "relationship"
-                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_object_boxes_pool5/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     query_object_feature.append(object_feature)
 
                     masks = np.load(
                         self._created_masks_path + "relationship"
-                        + '_binary_masks/' + name.replace('.jpg', '').replace('.png', '') + '.npy')
+                        + '_binary_masks/' + name.replace('.jpg', '').replace('.png', '') + '_' + str_id + '.npy')
                     query_masks.append(masks)
 
                     subject_id = self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]][
                         "subject_id"]
                     object_id = self.data[task_class_list[c_idx]]["relationships"][class_data_list[num_shots + i_idx]][
                         "object_id"]
-                    
+
+
 
                     query_object_label.append(np.array(object_id))
                     query_subject_label.append(np.array(subject_id))
@@ -322,18 +292,14 @@ class VRDDataLoader(data.Dataset):
 
                     object_embeddings = self.obj2onehot(object_id)
                     query_object_embeddings.append(object_embeddings)
-                    
-                    
-                    subject_sem_embeddings = self.obj2emb(subject_id)
-                    query_sem_subject_embeddings.append(subject_sem_embeddings)
 
-                    object_sem_embeddings = self.obj2emb(object_id)
-                    query_sem_object_embeddings.append(object_sem_embeddings)
-                    
-        
+
+
+
+
         support_object_label =  torch.stack([torch.from_numpy(data).float() for data in support_object_label], 0)
         support_subject_label =  torch.stack([torch.from_numpy(data).float() for data in support_subject_label], 0)
-        
+
         query_object_label =  torch.stack([torch.from_numpy(data).float() for data in query_object_label], 0)
         query_subject_label =  torch.stack([torch.from_numpy(data).float() for data in query_subject_label], 0)
 
@@ -357,20 +323,20 @@ class VRDDataLoader(data.Dataset):
         query_sem_object_embeddings = torch.stack([torch.from_numpy(data).float() for data in query_sem_object_embeddings], 0)
         support_subject_sem_embeddings = torch.stack([torch.from_numpy(data).float() for data in support_subject_sem_embeddings], 0)
         support_object_sem_embeddings = torch.stack([torch.from_numpy(data).float() for data in support_object_sem_embeddings], 0)
-    
+
         support_subject_new_feature = torch.stack([torch.from_numpy(data).float() for data in support_subject_new_feature], 0)
         support_object_new_feature = torch.stack([torch.from_numpy(data).float() for data in support_object_new_feature], 0)
-        
+
         query_subject_new_feature = torch.stack([torch.from_numpy(data).float() for data in query_subject_new_feature], 0)
         query_object_new_feature = torch.stack([torch.from_numpy(data).float() for data in query_object_new_feature], 0)
-        
-        return [support_subject_feature, support_uni_feature, 
+
+        return [support_subject_feature, support_uni_feature,
                 support_object_feature, support_masks,
                 support_subject_embeddings,
                 support_object_embeddings,support_subject_new_feature,
                 support_object_new_feature,support_subject_sem_embeddings,support_object_sem_embeddings],[query_subject_feature,query_uni_feature,
-             query_object_feature, 
-             query_masks,query_subject_embeddings, 
+             query_object_feature,
+             query_masks,query_subject_embeddings,
              query_object_embeddings,
              query_subject_new_feature,
                query_object_new_feature,query_sem_subject_embeddings,query_sem_object_embeddings],[support_subject_label,support_object_label,
